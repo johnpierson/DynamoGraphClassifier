@@ -23,12 +23,18 @@ namespace ClassifyDynamoGraph
             var signatureFilePath = Configuration["sig_file_path"];
             var imageToClassify = Configuration["image_to_classify"];
 
+
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFile(new Uri(@"https://pbs.twimg.com/media/ErFr9nsXIAA_vQY?format=jpg&name=large"), @"c:\temp\image.png");
+            }
+
             ImageClassifier.Register("onnx", () => new OnnxImageClassifier());
             using var classifier = ImageClassifier.CreateFromSignatureFile(
                 new FileInfo(signatureFilePath));
 
             var results = classifier.Classify(Image
-                .Load(imageToClassify).CloneAs<Rgb24>());
+                .Load(@"c:\temp\image.png").CloneAs<Rgb24>());
             Console.WriteLine(results.Classifications.First().Label);
         }
     }
