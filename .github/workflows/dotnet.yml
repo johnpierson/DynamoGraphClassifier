@@ -16,5 +16,5 @@ jobs:
       env:
          sig_file_path: ${{ secrets.SIG_FILE_PATH }}
          #image_to_classify: ${{ secrets.IMAGE_TO_CLASSIFY }}
-         image_to_classify: "https://pbs.twimg.com/media/ErFr9nsXIAA_vQY?format=jpg&name=large"  
+         image_to_classify: "https://pbs.twimg.com/media/EoaOeZaXMBIdYWK?format=jpg&name=4096x4096"  
       run: dotnet run -c Release
