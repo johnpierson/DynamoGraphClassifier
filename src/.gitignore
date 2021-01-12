@@ -1,0 +1,11 @@
+bin/
+obj/
+/packages/
+.DS_Store
+.idea/
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
+*.suo
+*.dtbcache
