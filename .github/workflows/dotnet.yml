@@ -1,0 +1,19 @@
+name: Send a Tweet
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Graph Classifier
+      uses: actions/checkout@v2
+      with:
+        repository: johnpierson/DynamoGraphClassifier
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100' 
+    - name: Run Tweet
+      env:
+         sig_file_path: ${{ secrets.SIG_FILE_PATH }}
+         image_to_classify: ""
+      run: dotnet run -c Release
