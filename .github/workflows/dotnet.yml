@@ -15,5 +15,5 @@ jobs:
     - name: Run Tweet
       env:
          sig_file_path: ${{ secrets.SIG_FILE_PATH }}
-         image_to_classify: ""
+         image_to_classify: ${{ secrets.IMAGE_TO_CLASSIFY }}
       run: dotnet run -c Release
