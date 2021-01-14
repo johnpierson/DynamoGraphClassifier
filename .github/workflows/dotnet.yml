@@ -21,7 +21,5 @@ jobs:
         dotnet-version: '3.1.100' 
     - name: Run Tweet
       env:
-         sig_file_path: ${{ secrets.SIG_FILE_PATH }}
-         #image_to_classify: ${{ secrets.IMAGE_TO_CLASSIFY }}
-         image_to_classify: "https://www.bmarq.co.uk/wp-content/uploads/2017/08/revit-dynamo-graph-text-align.png"  
+         sig_file_path: ${{ secrets.SIG_FILE_PATH }}  
       run: dotnet run -c Release
