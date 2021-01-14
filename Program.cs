@@ -36,14 +36,17 @@ namespace ClassifyDynamoGraph
 
             var mentionOptions = new ListTweetsMentioningMeOptions();
 
-
-            var newestMentions = service.ListTweetsMentioningMe(mentionOptions).Where(m => (DateTime.Now - m.CreatedDate).Days <= 2).ToList();
+            //only get mentions within the last day
+            var newestMentions = service.ListTweetsMentioningMe(mentionOptions).Where(m => (DateTime.Now - m.CreatedDate).Days <= 1).ToList();
           
+            //get out if there are none
             if (!newestMentions.Any()) return;
 
             int imageFlag = 0;
+
             foreach (var mention in newestMentions)
             {
+                //we favorite the mention to skip it if we run it again and find it
                 if (mention.IsFavorited)
                 {
                     continue;
@@ -77,10 +80,7 @@ namespace ClassifyDynamoGraph
                     AutoPopulateReplyMetadata = true
                 });
             }
-
         }
-
-
 
         private static string ClassifyImage(string imageUrl, int imageFlag)
         {
