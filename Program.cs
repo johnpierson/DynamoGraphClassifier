@@ -26,7 +26,7 @@ namespace ClassifyDynamoGraph
 
             using (WebClient client = new WebClient())
             {
-                client.DownloadFile(new Uri(@"https://pbs.twimg.com/media/ErFr9nsXIAA_vQY?format=jpg&name=large"), @"c:\temp\image.png");
+                client.DownloadFile(new Uri(imageToClassify), @"c:\temp\image.png");
             }
 
             ImageClassifier.Register("onnx", () => new OnnxImageClassifier());

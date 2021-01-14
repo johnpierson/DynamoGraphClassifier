@@ -9,3 +9,4 @@ obj/
 *.ide-wal
 *.suo
 *.dtbcache
+.vs/ClassifyDynamoGraph/DesignTimeBuild/.dtbcache.v2
