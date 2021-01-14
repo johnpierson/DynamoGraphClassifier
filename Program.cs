@@ -34,14 +34,15 @@ namespace ClassifyDynamoGraph
                 Configuration["twitter_access_token_secret"]
             );
 
-            var mentionOptons = new ListTweetsMentioningMeOptions();
+            var mentionOptions = new ListTweetsMentioningMeOptions();
+            
 
-            var newMentions = service.ListTweetsMentioningMe(mentionOptons).ToList();
+            var newMentions = service.ListTweetsMentioningMe(mentionOptions).ToList();
 
             if (!newMentions.Any()) return;
 
 
-            foreach (var mention in newMentions)
+            foreach (var mention in newMentions.Where(m => (DateTime.Now - m.CreatedDate).Days <= 2))
             {
                 if (mention.IsFavorited)
                 {
