@@ -2,9 +2,9 @@ name: Analyze a Graph from Twitter
 #on: [push]
 on:
   schedule:
-    - cron: '23 * * * *'
+    - cron: '24 * * * *'
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  #workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
