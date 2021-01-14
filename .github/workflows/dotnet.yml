@@ -22,4 +22,8 @@ jobs:
     - name: Run Tweet
       env:
          sig_file_path: ${{ secrets.SIG_FILE_PATH }}  
+         twitter_consumer_key: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
+         twitter_consumer_secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}
+         twitter_access_token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+         twitter_access_token_secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}  
       run: dotnet run -c Release
