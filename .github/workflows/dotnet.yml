@@ -23,5 +23,5 @@ jobs:
       env:
          sig_file_path: ${{ secrets.SIG_FILE_PATH }}
          #image_to_classify: ${{ secrets.IMAGE_TO_CLASSIFY }}
-         image_to_classify: "https://dynamobim.org/wp-content/uploads/forum-assets/vladimir-ondejcikwhite-se/04/27/DYN-01.jpg"  
+         image_to_classify: "https://www.bmarq.co.uk/wp-content/uploads/2017/08/revit-dynamo-graph-text-align.png"  
       run: dotnet run -c Release
