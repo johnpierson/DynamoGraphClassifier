@@ -36,11 +36,9 @@ namespace ClassifyDynamoGraph
 
             var mentionOptions = new ListTweetsMentioningMeOptions();
 
-            var newMentions = service.ListTweetsMentioningMe(mentionOptions).ToList();
-
-            if (!newMentions.Any()) return;
-
-            var newestMentions = newMentions.Where(m => (DateTime.Now - m.CreatedDate).Days <= 2);
+            var newestMentions = service.ListTweetsMentioningMe(mentionOptions).Where(m => (DateTime.Now - m.CreatedDate).Days <= 2);
+            
+            if (!newestMentions.Any()) return;
 
             int imageFlag = 0;
             foreach (var mention in newestMentions)
