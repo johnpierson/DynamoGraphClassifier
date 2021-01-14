@@ -35,14 +35,15 @@ namespace ClassifyDynamoGraph
             );
 
             var mentionOptions = new ListTweetsMentioningMeOptions();
-            
 
             var newMentions = service.ListTweetsMentioningMe(mentionOptions).ToList();
 
             if (!newMentions.Any()) return;
 
+            var newestMentions = newMentions.Where(m => (DateTime.Now - m.CreatedDate).Days <= 2);
 
-            foreach (var mention in newMentions.Where(m => (DateTime.Now - m.CreatedDate).Days <= 2))
+            int imageFlag = 0;
+            foreach (var mention in newestMentions)
             {
                 if (mention.IsFavorited)
                 {
@@ -54,7 +55,7 @@ namespace ClassifyDynamoGraph
                     status = "Hey! There is no Dynamo graph image in this tweet. Much sad.";
                 }
 
-                string classificationImage = ClassifyImage(mention.Entities.Media.First().MediaUrl);
+                string classificationImage = ClassifyImage(mention.Entities.Media.First().MediaUrl, imageFlag);
 
                 switch (classificationImage)
                 {
@@ -82,13 +83,14 @@ namespace ClassifyDynamoGraph
 
 
 
-        private static string ClassifyImage(string imageUrl)
+        private static string ClassifyImage(string imageUrl, int imageFlag)
         {
+            string imageName = $"c:\\temp\\image{imageFlag}.png";
             var signatureFilePath = Configuration["sig_file_path"]; ;
 
             using (WebClient client = new WebClient())
             {
-                client.DownloadFile(new Uri(imageUrl), @"c:\temp\image.png");
+                client.DownloadFile(new Uri(imageUrl), imageName);
             }
 
             ImageClassifier.Register("onnx", () => new OnnxImageClassifier());
@@ -96,7 +98,7 @@ namespace ClassifyDynamoGraph
                 new FileInfo(signatureFilePath));
 
             var results = classifier.Classify(Image
-                .Load(@"c:\temp\image.png").CloneAs<Rgb24>());
+                .Load(imageName).CloneAs<Rgb24>());
             Console.WriteLine(results.Classifications.First().Label);
 
             return results.Classifications.First().Label;
