@@ -18,6 +18,18 @@ namespace ClassifyDynamoGraph
             new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .Build();
+        private static readonly string[] Compliments = new[]
+        {
+            "awesome!",
+            "well lookie here",
+            "nice job!"
+        };
+        private static readonly string[] Bummer = new[]
+        {
+            "oh no.",
+            "bummer.",
+            "darn."
+        };
 
         static void Main(string[] args)
         {
@@ -52,33 +64,42 @@ namespace ClassifyDynamoGraph
                     continue;
                 }
 
-                if (mention.Entities.Media.Any())
+                if (!mention.Entities.Media.Any())
                 {
                     status = "Hey! There is no Dynamo graph image in this tweet. Much sad.";
                 }
 
-                string classificationImage = ClassifyImage(mention.Entities.Media.First().MediaUrl, imageFlag);
-
-                switch (classificationImage)
+                else
                 {
-                    case "Yes":
-                        status = "nice job this graph has annotations";
-                        break;
-                    case "No":
-                        status = "this graph has no annotations and makes me sad.";
-                        break;
+                    string classificationImage = ClassifyImage(mention.Entities.Media.First().MediaUrl, imageFlag);
+                    var random = new Random();
+                    int index = random.Next(Compliments.Length);
+                    switch (classificationImage)
+                    {
+                        case "Yes":
+                            status = $"{Compliments[index]} this graph has annotations";
+                            break;
+                        case "No":
+                            status = $"{Bummer[index]} this graph has no annotations and makes me sad.";
+                            break;
+                    }
                 }
+              
 
                 //favorite the tweet so we don't do it again
                 FavoriteTweetOptions favoriteOptions = new FavoriteTweetOptions { Id = mention.Id };
                 service.FavoriteTweet(favoriteOptions);
 
-                var result = service.SendTweet(new SendTweetOptions
+                if (!string.IsNullOrWhiteSpace(status))
                 {
-                    Status = status,
-                    InReplyToStatusId = mention.Id,
-                    AutoPopulateReplyMetadata = true
-                });
+                    var result = service.SendTweet(new SendTweetOptions
+                    {
+                        Status = status,
+                        InReplyToStatusId = mention.Id,
+                        AutoPopulateReplyMetadata = true
+                    });
+                }
+              
             }
         }
 
