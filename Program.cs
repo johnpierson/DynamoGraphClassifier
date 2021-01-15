@@ -33,7 +33,7 @@ namespace ClassifyDynamoGraph
 
         static void Main(string[] args)
         {
-            
+
             string status = string.Empty;
 
             var service = new TwitterService(
@@ -50,7 +50,7 @@ namespace ClassifyDynamoGraph
 
             //only get mentions within the last day
             var newestMentions = service.ListTweetsMentioningMe(mentionOptions).Where(m => (DateTime.Now - m.CreatedDate).Days <= 1).ToList();
-          
+
             //get out if there are none
             if (!newestMentions.Any()) return;
 
@@ -64,12 +64,7 @@ namespace ClassifyDynamoGraph
                     continue;
                 }
 
-                if (!mention.Entities.Media.ToList().Any())
-                {
-                    status = "Hey! There is no Dynamo graph image in this tweet. Much sad.";
-                }
-
-                else
+                try
                 {
                     string classificationImage = ClassifyImage(mention.Entities.Media.First().MediaUrl, imageFlag);
                     var random = new Random();
@@ -84,7 +79,10 @@ namespace ClassifyDynamoGraph
                             break;
                     }
                 }
-              
+                catch (Exception e)
+                {
+                    status = "Hey! There is no Dynamo graph image in this tweet. Much sad.";
+                }
 
                 //favorite the tweet so we don't do it again
                 FavoriteTweetOptions favoriteOptions = new FavoriteTweetOptions { Id = mention.Id };
@@ -99,7 +97,7 @@ namespace ClassifyDynamoGraph
                         AutoPopulateReplyMetadata = true
                     });
                 }
-              
+
             }
         }
 
