@@ -64,7 +64,7 @@ namespace ClassifyDynamoGraph
                     continue;
                 }
 
-                if (!mention.Entities.Media.Any())
+                if (!mention.Entities.Media.ToList().Any())
                 {
                     status = "Hey! There is no Dynamo graph image in this tweet. Much sad.";
                 }
