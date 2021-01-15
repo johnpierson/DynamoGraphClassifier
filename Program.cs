@@ -64,9 +64,15 @@ namespace ClassifyDynamoGraph
                     continue;
                 }
 
-                try
+                if (!mention.Entities.Media.Any())
+                {
+                    status = "Hey! There is no Dynamo graph image in this tweet. Much sad.";
+                }
+
+                else
                 {
                     string classificationImage = ClassifyImage(mention.Entities.Media.First().MediaUrl, imageFlag);
+                    //this allows us to randomly select a compliment or bummed out response
                     var random = new Random();
                     int index = random.Next(Compliments.Length);
                     switch (classificationImage)
@@ -79,10 +85,7 @@ namespace ClassifyDynamoGraph
                             break;
                     }
                 }
-                catch (Exception e)
-                {
-                    status = "Hey! There is no Dynamo graph image in this tweet. Much sad.";
-                }
+               
 
                 //favorite the tweet so we don't do it again
                 FavoriteTweetOptions favoriteOptions = new FavoriteTweetOptions { Id = mention.Id };
